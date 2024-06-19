@@ -1,34 +1,116 @@
-{
-  "metadata": {
-    "kernelspec": {
-      "name": "python",
-      "display_name": "Python (Pyodide)",
-      "language": "python"
+
+Cho tình hình tại Công ty HPT tính thuế GTGT theo phương pháp khấu trừ, kế toán HTK theo phương pháp kê khai thường xuyên như sau: (đơn vị: 1.000 đồng)
+
+NVL tồn kho đầu tháng 10: 1.200 kg, đơn giá 14/kg 
+Các nghiệp vụ phát sinh trong tháng 10 như sau:
+
+1.Mua 1.000 kg NVL nhập kho, đã thanh toán bằng chuyển khoản, giá hóa đơn chưa có thuế GTGT 10% là 14,2/kg.
+
+2.Xuất 800 kg NVL cho sản xuất sản phẩm.
+
+3.Nhận vốn góp bổ sung của Thành viên A 2.000 kg NVL, giá thỏa thuận 14,3/kg.
+
+4.Xuất 3.000 kg NVL bán cho khách hàng B thu bằng chuyển khoản với giá hóa đơn có thuế GTGT 10% là 19,8/kg.
+
+Yêu cầu 1a: Tính giá NVL xuất và tồn cuối tháng theo phương pháp nhập trước - xuất trước
+
+- NVL tồn kho đầu tháng = 800 × 14 = 11.200
+
+- Giá trị NVL xuất ở NV 4 = 400 × 14 + 1.000 × 14,2 + 1.600 × 14,3 = 42.680
+
+- Giá trị NVL tồn cuối tháng = 1.200 × 14 + 1.000 × 14,2 + 2.000 × 14,3 - 42.680 -11.200 = 5.720
+
+Yêu cầu 1b: Tính giá NVL xuất và tồn cuối tháng theo phương pháp giá đơn vị bình quân cả kỳ dự trữ. 
+Giá đơn vị bình quân = ((1.200 × 14) + (1.000 × 14,2) + (2.000 × 14,3))/(1.200 + 1.000 + 2.000) = 59.600/4.200 = 14,19
+
+- Giá trị NVL xuất = 3.800 × 14,19 = 53.922
+
+- Giá trị NVL tồn cuối tháng = 59.600 - 53.922 = 5.678
+
+Để giải được câu 1a, 1b của dạng bài tập kế toán hàng tồn kho trên bạn tham khảo thêm 
+Yêu cầu 2: Định khoản trên cơ sở kết quả tính theo phương pháp nhập trước - xuất trước
+
+1. Nợ TK 152         14.200
+
+Nợ TK 133   1.420
+
+Có TK 112   15.620
+
+2. Nợ TK 621         11.200
+
+Có TK 152   11.200 
+Có TK 152   11.200
+
+3. Nợ TK 152         28.600
+
+Có TK 411   28.600
+
+4a. Nợ TK 632       42.680
+
+Có TK 152   42.680
+
+4b. Nợ TK 112       59.400
+
+Có TK 511   54.000
+
+Có TK 3331 5.400
+
+
+
+  "metadata":  Quản lý Hàng Tồn Kho
+
+    "kernelspec": nhu cầu NVL tồn kho đầu tháng
+      "python " : 10: 1.200 kg, đơn giá 14/kg 
+       "Python : Giá trị NVL xuất  ở NV1 = 800 × 14 = 11.200
+      "language": Giá trị NVL xuất ở NV 4 = 400 × 14 + 1.000 × 14,2 + 1.600 × 14,3 = 42.680
     },
-    "language_info": {
-      "codemirror_mode": {
-        "name": "python",
-        "version": 3
-      },
-      "file_extension": ".py",
-      "mimetype": "text/x-python",
-      "name": "python",
-      "nbconvert_exporter": "python",
+    "language_info": Giá trị NVL tồn cuối tháng 
+      "codemirror_mode":  1.200 × 14 + 1.000 × 14,2 + 2.000 × 14,3 - 42.680 -11.200 = 5.720 
+         "python":  Giá đơn vị bình quân 
+        "version": ((1.200 × 14) + (1.000 × 14,2) + (2.000 × 14,3))/(1.200 + 1.000 + 2.000) = 59.600/4.200 = 14,19
+      | Sản phẩm | NVL tồn kho đầu tháng |  NVL nhập kho|  |Giá trị NVL tồn cuối tháng
+|----------|-----------------------------|-------------------------|-------------------------------------------|
+| A        | 1.200 kg                      | 1,000 kg              | 1.200                                 |
+| B        | 14 kg                         | 14,2 kg              | 2.000                                      |
+| C        | 1.000 kg                        | 14,3 kg              | 3.800                                      |
+
+      "file_extension":  Giá trị NVL xuất
+      "mimetype": 5 3.800 × 14,19 = 53.922
+      "python : 60 
+      "nbconvert_exporter": 40 
       "pygments_lexer": "ipython3",
-      "version": "3.8"
+      "version": "3.8 
     }
   },
-  "nbformat_minor": 4,
-  "nbformat": 4,
+  "nbformat_minor":  Giá trị NVL tồn cuối tháng
+  "nbformat":  59.600 - 53.922 = 5.678
   "cells": [
     {
-      "cell_type": "code",
-      "source": "Quản lý hàng tồn kho là một phần quan trọng trong kinh doanh, giúp doanh nghiệp tối ưu hóa lượng hàng hóa cần thiết và tránh tình trạng thiếu hoặc dư thừa hàng hóa\n\n### Bài tập: Quản lý Hàng Tồn Kho\n\nCông ty XYZ kinh doanh ba loại sản phẩm: A, B, và C. Mỗi sản phẩm có nhu cầu hàng tháng, chi phí đặt hàng và chi phí lưu kho khác nhau. Thông tin chi tiết như sau:\n\n| Sản phẩm | Nhu cầu hàng tháng (Đơn vị) | Chi phí đặt hàng (VNĐ) | Chi phí lưu kho mỗi đơn vị mỗi tháng (VNĐ) |\n|----------|-----------------------------|-------------------------|-------------------------------------------|\n| A        | 500                         | 1,000,000               | 50                                        |\n| B        | 300                         | 800,000                 | 60                                        |\n| C        | 200                         | 500,000                 | 40                                        |\n\nCông ty XYZ hiện tại muốn áp dụng mô hình quản lý hàng tồn kho EOQ (Economic Order Quantity) để tối ưu hóa chi phí. Công thức EOQ là:\n\n\\[ EOQ = \\sqrt{\\frac{2DS}{H}} \\]\n\nTrong đó:\n- \\( D \\) là nhu cầu hàng năm (tổng số đơn vị cần trong một năm)\n- \\( S \\) là chi phí đặt hàng mỗi lần\n- \\( H \\) là chi phí lưu kho mỗi đơn vị mỗi năm\n\nChức năng hàng tồn kho trong quản lý doanh nghiệp đóng vai trò quan trọng trong việc đảm bảo sự liên tục của quá trình sản xuất và kinh doanh. Các chức năng chính của hàng tồn kho bao gồm:\n\n1. **Dự trữ nguyên vật liệu**: Đảm bảo nguyên vật liệu luôn sẵn sàng để phục vụ sản xuất, tránh tình trạng gián đoạn.\n   \n2. **Bảo vệ chống lại sự thiếu hụt**: Dự trữ hàng hóa để phòng ngừa các rủi ro liên quan đến sự chậm trễ trong chuỗi cung ứng hoặc nhu cầu bất ngờ tăng cao.\n\n3. **Giảm chi phí đặt hàng**: Mua hàng với số lượng lớn để giảm chi phí đơn hàng và chi phí vận chuyển.\n\n4. **Tối ưu hóa sản xuất**: Duy trì mức tồn kho hợp lý để tối ưu hóa quá trình sản xuất, giảm thiểu thời gian chờ đợi và tăng hiệu suất hoạt động.\n\n5. **Hỗ trợ dịch vụ khách hàng**: Đảm bảo có sẵn hàng hóa để đáp ứng nhanh chóng nhu cầu của khách hàng, nâng cao mức độ hài lòng và giữ chân khách hàng.\n\n6. **Điều tiết giá cả**: Giúp doanh nghiệp điều chỉnh giá bán, kiểm soát chi phí hàng tồn kho nhằm tối ưu hóa lợi nhuận.\n\n7. **Quản lý không gian kho**: Tổ chức và sắp xếp hàng hóa trong kho một cách khoa học để dễ dàng truy xuất, kiểm soát và bảo quản.\n\n8. **Theo dõi và kiểm soát tồn kho**: Sử dụng các công cụ và phần mềm để theo dõi số lượng hàng tồn kho, hạn chế tình trạng thiếu hụt hoặc dư thừa hàng hóa.\n\nNhững chức năng này giúp doanh nghiệp duy trì hoạt động sản xuất, kinh doanh hiệu quả và đáp ứng kịp thời nhu cầu của thị trường.\n\n\n.",
-      "metadata": {
-        "trusted": true
-      },
-      "outputs": [],
-      "execution_count": null
-    }
-  ]
-}
+      "cell_type": 1. Nợ TK 152         14.200
+
+Nợ TK 133   1.420
+
+Có TK 112   15.620
+
+2. Nợ TK 621         11.200
+
+Có TK 152   11.200 
+Có TK 152   11.200
+
+3. Nợ TK 152         28.600
+
+Có TK 411   28.600
+
+4a. Nợ TK 632       42.680
+     
+        "trusted": Có TK 152   42.680
+
+4b. Nợ TK 112       59.400
+
+Có TK 511   54.000
+
+Có TK 3331 5.400
+
+      
+    
+  
