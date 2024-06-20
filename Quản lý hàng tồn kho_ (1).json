@@ -1,115 +1,69 @@
+Dưới đây là  mã code đơn giản để quản lý hàng tồn kho xe đạp bằng Python. Mã này bao gồm các chức năng thêm xe đạp mới, cập nhật số lượng xe, xóa xe và hiển thị danh sách tồn kho.
 
-Cho tình hình tại Công ty HPT tính thuế GTGT theo phương pháp khấu trừ, kế toán HTK theo phương pháp kê khai thường xuyên như sau: (đơn vị: 1.000 đồng)
+```python
+class Bicycle:
+    def __init__(self, model, quantity, price):
+        self.model = model
+        self.quantity = quantity
+        self.price = price
 
-NVL tồn kho đầu tháng 10: 1.200 kg, đơn giá 14/kg 
-Các nghiệp vụ phát sinh trong tháng 10 như sau:
+class Inventory:
+    def __init__(self):
+        self.bicycles = {}
 
-1.Mua 1.000 kg NVL nhập kho, đã thanh toán bằng chuyển khoản, giá hóa đơn chưa có thuế GTGT 10% là 14,2/kg.
+    def add_bicycle(self, model, quantity, price):
+        if model in self.bicycles:
+            self.bicycles[model].quantity += quantity
+        else:
+            self.bicycles[model] = Bicycle(model, quantity, price)
+        print(f"Đã thêm hoặc cập nhật {model}: {quantity} xe, giá {price} mỗi chiếc")
 
-2.Xuất 800 kg NVL cho sản xuất sản phẩm.
+    def update_quantity(self, model, quantity):
+        if model in self.bicycles:
+            self.bicycles[model].quantity = quantity
+            print(f"Đã cập nhật số lượng {model} thành {quantity}")
+        else:
+            print(f"Model {model} không tồn tại trong kho")
 
-3.Nhận vốn góp bổ sung của Thành viên A 2.000 kg NVL, giá thỏa thuận 14,3/kg.
+    def remove_bicycle(self, model):
+        if model in self.bicycles:
+            del self.bicycles[model]
+            print(f"Đã xóa {model} khỏi kho")
+        else:
+            print(f"Model {model} không tồn tại trong kho")
 
-4.Xuất 3.000 kg NVL bán cho khách hàng B thu bằng chuyển khoản với giá hóa đơn có thuế GTGT 10% là 19,8/kg.
+    def display_inventory(self):
+        if not self.bicycles:
+            print("Kho hiện đang trống")
+        else:
+            print("Danh sách tồn kho xe đạp:")
+            for model, bicycle in self.bicycles.items():
+                print(f"Model: {model}, Số lượng: {bicycle.quantity}, Giá: {bicycle.price}")
 
-Yêu cầu 1a: Tính giá NVL xuất và tồn cuối tháng theo phương pháp nhập trước - xuất trước
+# Sử dụng các chức năng của lớp Inventory
+inventory = Inventory()
+inventory.add_bicycle("Mountain Bike", 10, 500)
+inventory.add_bicycle("Road Bike", 5, 700)
+inventory.update_quantity("Mountain Bike", 15)
+inventory.display_inventory()
+inventory.remove_bicycle("Road Bike")
+inventory.display_inventory()
+```
 
-- NVL tồn kho đầu tháng = 800 × 14 = 11.200
-
-- Giá trị NVL xuất ở NV 4 = 400 × 14 + 1.000 × 14,2 + 1.600 × 14,3 = 42.680
-
-- Giá trị NVL tồn cuối tháng = 1.200 × 14 + 1.000 × 14,2 + 2.000 × 14,3 - 42.680 -11.200 = 5.720
-
-Yêu cầu 1b: Tính giá NVL xuất và tồn cuối tháng theo phương pháp giá đơn vị bình quân cả kỳ dự trữ. 
-Giá đơn vị bình quân = ((1.200 × 14) + (1.000 × 14,2) + (2.000 × 14,3))/(1.200 + 1.000 + 2.000) = 59.600/4.200 = 14,19
-
-- Giá trị NVL xuất = 3.800 × 14,19 = 53.922
-
-- Giá trị NVL tồn cuối tháng = 59.600 - 53.922 = 5.678
-
-Để giải được câu 1a, 1b của dạng bài tập kế toán hàng tồn kho trên bạn tham khảo thêm 
-Yêu cầu 2: Định khoản trên cơ sở kết quả tính theo phương pháp nhập trước - xuất trước
-
-1. Nợ TK 152         14.200
-
-Nợ TK 133   1.420
-
-Có TK 112   15.620
-
-2. Nợ TK 621         11.200
-
-Có TK 152   11.200 
-Có TK 152   11.200
-
-3. Nợ TK 152         28.600
-
-Có TK 411   28.600
-
-4a. Nợ TK 632       42.680
-
-Có TK 152   42.680
-
-4b. Nợ TK 112       59.400
-
-Có TK 511   54.000
-
-Có TK 3331 5.400
-
+### Giải thích:
+- **Bicycle class**: Đại diện cho một mẫu xe đạp, bao gồm tên mẫu, số lượng và giá.
+- **Inventory class**: Quản lý kho chứa xe đạp. Bao gồm các phương thức để thêm, cập nhật, xóa và hiển thị xe đạp trong kho.
 
 
-  "metadata":  Quản lý Hàng Tồn Kho
 
-    "kernelspec": nhu cầu NVL tồn kho đầu tháng
-      "python " : 10: 1.200 kg, đơn giá 14/kg 
-       "Python : Giá trị NVL xuất  ở NV1 = 800 × 14 = 11.200
-      "language": Giá trị NVL xuất ở NV 4 = 400 × 14 + 1.000 × 14,2 + 1.600 × 14,3 = 42.680
-    },
-    "language_info": Giá trị NVL tồn cuối tháng 
-      "codemirror_mode":  1.200 × 14 + 1.000 × 14,2 + 2.000 × 14,3 - 42.680 -11.200 = 5.720 
-         "python":  Giá đơn vị bình quân 
-        "version": ((1.200 × 14) + (1.000 × 14,2) + (2.000 × 14,3))/(1.200 + 1.000 + 2.000) = 59.600/4.200 = 14,19
-      | Sản phẩm | NVL tồn kho đầu tháng |  NVL nhập kho|  |Giá trị NVL tồn cuối tháng
-|----------|-----------------------------|-------------------------|-------------------------------------------|
-| A        | 1.200 kg                      | 1,000 kg              | 1.200                                 |
-| B        | 14 kg                         | 14,2 kg              | 2.000                                      |
-| C        | 1.000 kg                        | 14,3 kg              | 3.800                                      |
 
-      "file_extension":  Giá trị NVL xuất
-      "mimetype": 5 3.800 × 14,19 = 53.922
-      "python : 60 
-      "nbconvert_exporter": 40 
-      "pygments_lexer": "ipython3",
-      "version": "3.8 
-    }
-  },
-  "nbformat_minor":  Giá trị NVL tồn cuối tháng
-  "nbformat":  59.600 - 53.922 = 5.678
-  "cells": [
-    {
-      "cell_type": 1. Nợ TK 152         14.200
 
-Nợ TK 133   1.420
 
-Có TK 112   15.620
 
-2. Nợ TK 621         11.200
+   
 
-Có TK 152   11.200 
-Có TK 152   11.200
 
-3. Nợ TK 152         28.600
 
-Có TK 411   28.600
-
-4a. Nợ TK 632       42.680
-     
-        "trusted": Có TK 152   42.680
-
-4b. Nợ TK 112       59.400
-
-Có TK 511   54.000
-
-Có TK 3331 5.400
 
       
     
