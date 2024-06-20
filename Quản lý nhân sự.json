@@ -1,92 +1,151 @@
+import tkinter as tk
+from tkinter import *
+from tkinter import ttk
+from tkcalendar import DateEntry
+from tkinter import messagebox
+from customtkinter import *
+import pandas as pd
+#--------------------------------------------#
+#pd
+try:
+    df = pd.read_excel('data.xlsx')
+except FileNotFoundError:
+    df = pd.DataFrame(columns=['ID', 'Day', 'Type of motobike', 'Cost', 'Staff', 'Tax', 'Total'])
 
+data_table = df.values.tolist()
+header_table = df.columns.values.tolist()
+#--------------------------------------------#
+#Calculate
+def calculate_total():
+    try:
+        cost = float(cost_entry.get())
+        tax = float(tax_entry.get())
+        total = (cost * tax/100) + cost
+        total_entry.delete(0, tk.END)
+        total_entry.insert(0, total)
+    except ValueError:
+        messagebox.showerror("Error", "Invalid input. Please enter numbers for cost and tax.")
+#--------------------------------------------#
+window = Tk()
+window.title('Motorbike Sales Management System')
+window.geometry('760x760')
+window.config(bg='lightgreen')
+quit_icon = PhotoImage(file = 'quit.png')
+add_icon = PhotoImage(file = 'add.png')
+delete_icon = PhotoImage(file = 'delete.png')
+save_icon = PhotoImage(file = 'save.png')
+calculate_icon = PhotoImage(file = 'calculator.png')
+logo = PhotoImage(file = 'logo.png')
+#--------------------------------------------#
+#Label
+logo_label = CTkLabel(window,image = logo,text = '').place(x = 5, y = 15)
+title_label = CTkLabel(window, text = 'MOTOBIKE SALES MANAGEMENT SYSTEM',text_color = 'tomato', font = ('Times new roman',20),fg_color = 'lightgreen').place(x = 200, y = 10)
+day_label = CTkLabel(window, text = 'Day:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 80, y = 50)
+type_label = CTkLabel(window, text = 'Type of motobike:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 40, y = 85)
+cost_label = CTkLabel(window, text = 'Cost:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 80, y = 120)
+staff_label = CTkLabel(window, text = 'Staff:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 430, y = 50)
+tax_label = CTkLabel(window, text = 'Tax:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 430, y = 85)
+total_label = CTkLabel(window, text = 'Total:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 430, y = 120)
+color_label = CTkLabel(window, text = 'Color:',text_color = 'tomato',font=('Times new roman',18),fg_color = 'lightgreen').place(x = 250, y = 155)
+#Entry
+cost_entry = CTkEntry(window,corner_radius = 32,border_color = 'hotpink')
+cost_entry.place(x = 180, y = 120)
+tax_entry = CTkEntry(window,corner_radius = 32,border_color = 'hotpink')
+tax_entry.place(x = 480, y = 85)
+total_entry = CTkEntry(window,corner_radius = 32,border_color = 'hotpink')
+total_entry.place(x = 480, y = 120)
+#Combobox
+staff_combobox = CTkComboBox(window,values = ['','Phạm Quang Khải', 'Phạm Quang', 'Phạm'], fg_color = 'lightpink',border_color = 'hotpink', dropdown_fg_color = 'lightpink',corner_radius = 32,width = 165)
+staff_combobox.place(x = 480, y = 50)
+type_combobox = CTkComboBox(window,values = ['','Peugeot Scooter', 'Scoopy', 'SH','Air Blade','SH Mode','Vision'], fg_color = 'lightpink',border_color = 'hotpink', dropdown_fg_color = 'lightpink',corner_radius = 32)
+type_combobox.place(x = 180, y = 85)
+color_combobox = CTkComboBox(window,values = ['','Red', 'Blue', 'Pink', 'Black', 'White', 'Green'], fg_color = 'lightpink',border_color = 'hotpink', dropdown_fg_color = 'lightpink',corner_radius = 32)
+color_combobox.place(x = 300, y = 155)
+#Date_Entry
+day_entry = DateEntry(window,background='salmon',date_pattern='MM/dd/yyyy')
+day_entry.place(x = 180, y = 50)
+#Button
+calculate_button = CTkButton(window,image = calculate_icon, text = 'CALCULATE',corner_radius = 32,command= calculate_total, fg_color="hotpink",width=40, height=25)
+calculate_button.place(x=630, y=120)
+quit_button = CTkButton(window,image = quit_icon, text='Quit', corner_radius=32, command=quit, fg_color="hotpink", width=30, height=25,compound = LEFT)
+quit_button.place(x = 600, y = 600)
+#Table
+style = ttk.Style()
+style.configure('Treeview',background = 'darkgrey',foreground = 'black',rowheight = 25, fieldbackground = 'darkgrey')
+style.map('Treeview',background = [('selected','lightpink')])
+table = ttk.Treeview(window,column = ('ID','Day', 'Type of motobike','Cost','Staff','Tax','Total'),show = 'headings')
+table.heading('ID',text = 'ID')
+table.heading('Day', text = 'Day')
+table.heading('Type of motobike', text = 'Type of motobike')
+table.heading('Cost', text = 'Cost (VND)')
+table.heading('Staff', text = 'Staff')
+table.heading('Tax', text = 'Tax (%)')
+table.heading('Total', text = 'Total (VND)')
+table.column('ID',width = 30)
+table.column('Day', width=100)
+table.column('Type of motobike', width=125)
+table.column('Cost', width=125)
+table.column('Staff', width=125)
+table.column('Tax', width=75)
+table.column('Total', width=125)
+table.place(x = 20, y = 250)
+#Save
+def save_data():
+    global df
+    new_data = []
+    for item in table.get_children():
+        values = table.item(item)['values']
+        new_data.append(values)
+    df = pd.DataFrame(new_data, columns=header_table)
 
- Quản lý nhân sự là một phần quan trọng trong việc điều hành và phát triển doanh nghiệp. . Dưới đây là các thông tin cơ bản cần quản lý cho mỗi nhân viên:
+    try:
+        df.to_excel('data.xlsx', index=False)
+        messagebox.showinfo("Success", "Data saved successfully!")
+    except PermissionError:
+        messagebox.showerror("Error", "Failed to save data. Check file permissions.")
+save_button = CTkButton(window,image = save_icon, text='SAVE', corner_radius=32, command=save_data, fg_color="hotpink", width=30, height=25)
+save_button.place(x=450, y=200)
+#Add
+add_button = CTkButton(window,image  = add_icon, text = 'ADD',corner_radius = 32,command=lambda: add_data(), fg_color="hotpink",width=30, height=25)
+add_button.place(x = 230, y = 200)
+i = 0
+def add_data():
+    day = day_entry.get()
+    type_of_motobike = type_combobox.get()
+    cost = cost_entry.get()
+    staff = staff_combobox.get()
+    tax = tax_entry.get()
+    total = total_entry.get()
+    global i
+    i += 1
+    table.insert("", 'end', values=(i, day, type_of_motobike, cost, staff, tax, total))
 
-1. **Họ tên:** Tên đầy đủ của nhân viên.
-2. **Quê quán:** Nơi sinh hoặc địa chỉ cư trú hiện tại.
-3. **Mã phòng ban:** Mã định danh cho phòng ban mà nhân viên làm việc.
-4. **Lương hiện tại:** Mức lương mà nhân viên đang nhận.
-5. **Ngày vào công ty:** Ngày mà nhân viên bắt đầu làm việc tại công ty.
+    day_entry.delete(0, tk.END)
+    type_combobox.set('')
+    cost_entry.delete(0, tk.END)
+    staff_combobox.set('')
+    tax_entry.delete(0, tk.END)
+    total_entry.delete(0, tk.END)
+    day_entry.focus()
+    messagebox.showinfo("Success", "Data added successfully!")
+#Delete
+delete_button = CTkButton(window,image = delete_icon, text = 'DELETE',corner_radius = 32,command=lambda: delete_data(), fg_color="hotpink",width=40, height=25)
+delete_button.place(x = 330, y = 200)
+def delete_data():
+    selected_row = table.selection()
+    if selected_row:
+        table.delete(selected_row[0])
+    messagebox.showinfo("Success", "Data deleted successfully!")
 
-### Ví dụ về cách lưu trữ thông tin nhân sự trong một bảng dữ liệu:
+window.mainloop()
 
-| Họ tên          | Quê quán          | Mã phòng ban | Lương hiện tại | Ngày vào công ty |
-|-----------------|-------------------|--------------|----------------|------------------|
-| Nguyễn Văn A    | Hà Nội            | P01          | 15,000,000 VND | 01/01/2020       |
-| Trần Thị B      | TP. Hồ Chí Minh   | P02          | 18,000,000 VND | 15/03/2021       |
-| Lê Thị C        | Đà Nẵng           | P01          | 20,000,000 VND | 10/06/2019       |
-| Phạm Văn D      | Hải Phòng         | P03          | 17,000,000 VND | 22/08/2022       |
+       
 
-### Các bước quản lý thông tin nhân sự hiệu quả:
+ 
+       
 
-1. **Thu thập dữ liệu:** Đảm bảo rằng mọi thông tin cần thiết của nhân viên được thu thập đầy đủ và chính xác ngay từ đầu.
-2. **Lưu trữ dữ liệu:** Sử dụng hệ thống quản lý dữ liệu như bảng tính Excel hoặc các phần mềm quản lý nhân sự chuyên nghiệp để lưu trữ thông tin.
-3. **Cập nhật thường xuyên:** Thường xuyên cập nhật thông tin khi có thay đổi, chẳng hạn như thay đổi lương, chuyển phòng ban, hoặc thay đổi địa chỉ.
-4. **Bảo mật thông tin:** Đảm bảo rằng dữ liệu nhân sự được bảo mật và chỉ có những người có quyền mới được truy cập.
-
-### Lợi ích của việc quản lý thông tin nhân sự:
-
-- **Theo dõi và đánh giá hiệu suất:** Giúp nhà quản lý theo dõi và đánh giá hiệu suất làm việc của nhân viên.
-- **Quản lý lương thưởng:** Giúp tính toán và quản lý lương thưởng chính xác và kịp thời.
-- **Phát triển nhân sự:** Giúp xây dựng kế hoạch đào tạo và phát triển nhân viên dựa trên thông tin cá nhân và năng lực hiện tại.
-- **Đáp ứng quy định pháp luật:** Đảm bảo tuân thủ các quy định pháp luật về lao động và quản lý nhân sự.
-
-### Công cụ hỗ trợ:
-
-- **Phần mềm quản lý nhân sự:** Như BambooHR, Gusto, Zenefits giúp tự động hóa nhiều quy trình quản lý nhân sự.
-- **Bảng tính Excel:** Đối với doanh nghiệp nhỏ, bảng tính Excel có thể là lựa chọn phù hợp để quản lý thông tin nhân sự đơn giản và hiệu quả.
-
-Việc quản lý thông tin nhân sự không chỉ giúp doanh nghiệp hoạt động hiệu quả hơn mà còn tạo môi trường làm việc chuyên nghiệp và đáng tin cậy cho nhân viên.
-Chức năng nhân sự (hay còn gọi là Quản trị nhân sự) bao gồm các hoạt động liên quan đến quản lý và phát triển nguồn nhân lực trong một tổ chức. Dưới đây là các chức năng chính của nhân sự:
-
-1. **Tuyển dụng và lựa chọn nhân viên**: Bao gồm việc tìm kiếm, phỏng vấn, và chọn lọc những ứng viên phù hợp với các vị trí cần tuyển trong công ty.
-
-2. **Đào tạo và phát triển**: Đảm bảo nhân viên có kỹ năng và kiến thức cần thiết để thực hiện công việc hiệu quả, thông qua các chương trình đào tạo và phát triển chuyên môn.
-
-3. **Quản lý hiệu suất làm việc**: Theo dõi và đánh giá hiệu suất của nhân viên, đưa ra phản hồi và các biện pháp cải thiện hiệu suất làm việc.
-
-4. **Chế độ lương thưởng và phúc lợi**: Xây dựng và quản lý hệ thống lương thưởng, phúc lợi để đảm bảo công bằng và khuyến khích nhân viên làm việc.
-
-5. **Quan hệ lao động**: Giải quyết các vấn đề liên quan đến quan hệ giữa nhân viên và doanh nghiệp, bao gồm việc giải quyết tranh chấp lao động và thương lượng hợp đồng lao động.
-
-6. **Quản lý hồ sơ nhân viên**: Lưu trữ và quản lý thông tin cá nhân và công việc của nhân viên, đảm bảo tính bảo mật và tuân thủ các quy định pháp luật.
-
-7. **Hoạch định nguồn nhân lực**: Dự báo nhu cầu nhân lực của công ty trong tương lai và lập kế hoạch để đáp ứng nhu cầu đó.
-
-8. **Phát triển văn hóa doanh nghiệp**: Xây dựng và duy trì một môi trường làm việc tích cực, văn hóa doanh nghiệp hỗ trợ cho sự phát triển của cả tổ chức và nhân viên.
-
-Những chức năng này giúp đảm bảo rằng tổ chức có được nguồn nhân lực phù hợp, được phát triển và duy trì để đạt được các mục tiêu chiến lược của doanh nghiệp.
- "metadata":  Họ tên
-    "kernelspec":  Nguyễn Văn A  
-      "name":Trần Thị B 
-      "display_name":  Lê Thị C
-      "language":  Phạm Văn D   
-    },
-    "language_info": Quê quán   
-      "codemirror_mode": TP. Hồ Chí Minh   
-        "name": "python": Đà Nẵng 
-        "version":  Hải Phòng    
-      },
-      "file_extension":  Mã phòng ban
-      "mimetype": p 01 
-      "name": "python": p 02 
-      "nbconvert_exporter": p 01 
-      "pygments_lexer": p 03 
-      "version": "3.8"
-    }
-  },
-  "nbformat_minor":Lương hiện tại
-  "nbformat":  15,000,000 VND 
-  "cells": 18,000,000 VND
-    nbconvet :  20,000,000 VND
-      "cell_type": 17,000,000 VND
-     
-      version : Ngày vào công ty
-      
-      "outputs":01/01/2020
-      "execution_count": 15/03/2021
-      "cells"  : 10/06/2019 
-      " cells" : 22/08/2022
-    
-
-  
+   
+         
+        
+   
+             
